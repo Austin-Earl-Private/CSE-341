@@ -6,10 +6,6 @@ const rootDir = require('../util/path');
 const products = [];
 const router = express.Router();
 router.get('/add-product', (req, res, next) => {
-    // res.send(
-    //     '<form action="/admin/add-product" method="POST" ><input type="text" name="title" ><button type="submit">Add Product</button></form>'
-    // );
-    // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
     res.render('add-product', {
         docTitle: 'Add product',
         path: '/admin/add-product',
@@ -17,7 +13,14 @@ router.get('/add-product', (req, res, next) => {
 });
 
 router.post('/add-product', (req, res, next) => {
-    console.log(req.body.title);
+    let book = req.body;
+    // Adding a description can be hard at times..... so Im lazy and added a default.
+    if (book.description === '') {
+        book.description =
+            'A very interesting book about so many even more interesting things!';
+    }
+    console.log(book);
+
     products.push(req.body);
     res.redirect('/');
 });
