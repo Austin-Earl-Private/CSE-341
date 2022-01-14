@@ -8,6 +8,13 @@ const errorController = require('./controllers/error');
 
 const app = express();
 
+const cors = require('cors');
+const corsOptions = {
+    origin: 'https://personal-app-cse341.herokuapp.com/',
+    optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -52,7 +59,7 @@ mongoose
             }
         });
 
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);
     })
     .catch((err) => {
         console.log(err);
