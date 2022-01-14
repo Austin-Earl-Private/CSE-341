@@ -2,7 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongo = require('./util/database');
+const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
 
@@ -19,20 +19,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    User.findById('61e06b0bfc49abcfbdb3842a')
+    User.findById('61e0b5838e0d4d67e9af8e4e')
         .then((user) => {
-            req.user = new User(
-                user.username,
-                user.email,
-                user._id.toString(),
-                user.cart
-            );
+            req.user = user;
             next();
         })
         .catch((err) => {
             console.log(err);
             next();
         });
+    // next();
 });
 
 app.use('/admin', adminRoutes);
@@ -40,8 +36,24 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongo.mongoConnect(() => {
-    // console.log(client);
+mongoose
+    .connect(
+        'mongodb+srv://database:vbfgrt45%24%25@cluster0.lj6vk.mongodb.net/shop?w=majority'
+    )
+    .then(() => {
+        User.findOne().then((user) => {
+            if (!user) {
+                const user = new User({
+                    name: 'Austin Earl',
+                    email: 'theqmind2020@gmail.com',
+                    cart: { items: [] },
+                });
+                user.save();
+            }
+        });
 
-    app.listen(3000);
-});
+        app.listen(3000);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
