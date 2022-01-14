@@ -43,10 +43,18 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    family: 4,
+};
+const MONGODB_URL =
+    process.env.MONGODB_URL ||
+    'mongodb+srv://database:vbfgrt45%24%25@cluster0.lj6vk.mongodb.net/shop?w=majority';
 mongoose
-    .connect(
-        'mongodb+srv://database:vbfgrt45%24%25@cluster0.lj6vk.mongodb.net/shop?w=majority'
-    )
+    .connect(MONGODB_URL, options)
     .then(() => {
         User.findOne().then((user) => {
             if (!user) {
