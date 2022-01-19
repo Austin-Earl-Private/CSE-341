@@ -1,5 +1,21 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+// const nodemailer = require('nodemailer');
+// const sendgridTransport = require('nodemailer-sendgrid-transport');
+const sendgrid = require('@sendgrid/mail');
+// const transporter = nodemailer.createTransport(
+//     sendgridTransport({
+//         auth: {
+//             api_key:
+//                 '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',
+//         },
+//     })
+// );
+
+sendgrid.setApiKey(
+    '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'
+);
+
 exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
@@ -64,7 +80,6 @@ exports.postSignup = (req, res, next) => {
                 .hash(password, 12)
                 .then((hash) => {
                     const user = new User({
-                        name: 'test',
                         email: email,
                         password: hash,
                         cart: { items: [] },
@@ -72,7 +87,28 @@ exports.postSignup = (req, res, next) => {
                     return user.save();
                 })
                 .then((result) => {
-                    res.redirect('/login');
+                    sendgrid.send(
+                        {
+                            to: email,
+                            from: 'that1nerd@byui.edu',
+                            subject: 'Welcome to Node-Shop!',
+                            html: '<h1>Welcome to Node-Shop!</h1>',
+                        },
+                        (err, info) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(info);
+                            }
+                        }
+                    );
+                    return res.redirect('/login');
+                })
+                .then(() => {
+                    return;
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
         })
         .catch((err) => {});
