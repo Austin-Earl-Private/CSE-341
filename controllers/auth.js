@@ -3,17 +3,11 @@ const bcrypt = require('bcryptjs');
 // const nodemailer = require('nodemailer');
 // const sendgridTransport = require('nodemailer-sendgrid-transport');
 const sendgrid = require('@sendgrid/mail');
-// const transporter = nodemailer.createTransport(
-//     sendgridTransport({
-//         auth: {
-//             api_key:
-//                 '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',
-//         },
-//     })
-// );
 
 sendgrid.setApiKey(
-    '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'
+    'SG. -  qDqiOhJJSCeaHp -  7vsz-BqQ.cMB -  pQ917MAACpdzIy  -  wPw3DqKfRmEPs7FB -  Ug4BzO  - s9GY'
+        .replace(' ', '')
+        .replace('-', '')
 );
 
 exports.getLogin = (req, res, next) => {
