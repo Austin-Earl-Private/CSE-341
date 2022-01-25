@@ -41,7 +41,7 @@ router.post(
         'title',
         'Title has to be at least 3 charaters long and only contain Alphanumeric charaters.'
     )
-        .isAlphanumeric()
+        .isString()
         .isLength({ min: 3 })
         .trim(),
     check('imageUrl', 'Image URL must be a vaild URL.').isURL().trim(),
@@ -49,6 +49,11 @@ router.post(
     check('description', 'description must be at least 5 charaters.')
         .isLength({ min: 5 })
         .trim(),
+    check('sale_enabled', 'Sale must have a valid price').custom(
+        (value, { req }) => {
+            return parseFloat(req.body.sale_price) >= 0;
+        }
+    ),
     isAuth,
     adminController.postEditProduct
 );

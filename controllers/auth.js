@@ -185,9 +185,15 @@ exports.postReset = (req, res, next) => {
                     .then((info) => {
                         console.log('Sent to: %s', info.messageId);
                     });
-                return res.redirect('/');
+                req.flash(
+                    'error',
+                    'An email hs been sent to your email address containing a link to reset your password.'
+                );
+                return res.redirect('/login');
             })
             .catch((err) => {
+                console.log(err);
+
                 const error = new Error(err);
                 error.httpStatuseCode = 500;
                 return next(error);

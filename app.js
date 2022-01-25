@@ -80,7 +80,12 @@ app.use(authRoutes);
 app.use('/500', errorController.get500);
 app.use(errorController.get404);
 app.use((err, req, res, next) => {
-    return res.status(500).redirect('/500');
+    console.log(err);
+    res.status(500).render('500', {
+        pageTitle: 'Error!',
+        path: '/500',
+        isAuthenticated: req.session.isLoggedIn,
+    });
 });
 const options = {
     useUnifiedTopology: true,

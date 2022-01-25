@@ -47,12 +47,44 @@
                     id="description" 
                     rows="5"><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
             </div>
+
+            <label for="">Enable Sale?</label>
+                            <script>
+                                function addSale() {
+                                    console.log("ran")
+                                    if(document.querySelector("#sale").checked){
+                                        document.querySelector("#sale-container").classList.remove("hidden")
+                                    }else{
+                                        document.querySelector("#sale-container").classList.add("hidden")
+
+                                    }
+                                }
+                </script>
+                <label class="switch">
+                    
+                    <input type="checkbox" id="sale" onclick="addSale()" name="sale_enabled" <% if(product.sale.active) { %>checked <% } %>>
+                    <span class="slider round"></span>
+                </label>
+                
+
+                <div class="form-control <% if(!product.sale.active) { %>hidden<%}%>" id="sale-container">
+                    <label for="sale_price">Sale Price</label>
+                    <input type="number" name="sale_price" id="sale_price" step="0.01" value="<%= product.sale.active ? product.sale.saleAmount : 0.0%>">
+                </div>
+           
+
+                
+            </div>
             <% if (editing) { %>
                 <input type="hidden" value="<%= product._id %>" name="productId">
             <% } %>
 
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+            <div style="display: flex; flex-direction: row;">
+
+                <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+            </div>
+            
         </form>
     </main>
 <%- include('../includes/end.ejs') %>

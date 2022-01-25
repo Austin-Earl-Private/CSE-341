@@ -3,6 +3,11 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
-    <h1>Page Not Found!</h1>
+    <main class="centered">
+        <h1>We are sorry.</h1>
+        <p>We can't find the page <span id="code"><%= missingPath %></span></p>
+        <p>Click <a href="/">here</a> to go home.</p>
+    </main>
+    
 
 <%- include('includes/end.ejs') %>
