@@ -17,8 +17,7 @@ const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
 const MONGODB_URI =
-    process.env.MONGODB_URL ||
-    'mongodb+srv://database:vbfgrt45%24%25@cluster0.lj6vk.mongodb.net/shop?w=majority';
+    process.env.MONGODB_URL;
 
 const store = new MongoDBStore({
     uri: MONGODB_URI,
